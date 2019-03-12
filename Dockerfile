@@ -1,7 +1,5 @@
-FROM alpine
-
-RUN apk add --no-cache yarn && \
-    yarn global add serverless
+FROM node:alpine
+RUN yarn global add serverless && yarn cache clean
 
 WORKDIR /var/task
 
