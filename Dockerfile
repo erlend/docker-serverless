@@ -8,6 +8,7 @@ RUN curl -sL https://rpm.nodesource.com/setup_8.x | bash - && \
     yum clean all && \
     gem update bundler && \
     yarn global add aws-sdk serverless && \
+    yarn cache clean && \
     cd /tmp && \
     curl -L https://github.com/zeromq/libzmq/releases/download/v$ZEROMQ_VERSION/zeromq-$ZEROMQ_VERSION.tar.gz \
     | tar zx && \
@@ -18,7 +19,7 @@ RUN curl -sL https://rpm.nodesource.com/setup_8.x | bash - && \
     rm -rf zeromq-$ZEROMQ_VERSION
 
 ONBUILD COPY package.json yarn.lock /var/task/
-ONBUILD RUN yarn
+ONBUILD RUN yarn install && yarn cache clean
 
 ONBUILD COPY Gemfile Gemfile.lock /var/task/
 ONBUILD ARG BUNDLER_ARGS="--deployment --without=development:test"
